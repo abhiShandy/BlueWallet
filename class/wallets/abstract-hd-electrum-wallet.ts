@@ -88,14 +88,14 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
   async generate() {
     const buf = await randomBytes(16);
     this.secret = bip39.entropyToMnemonic(buf.toString('hex'));
-    this.setPaymentCode();
+    this.setBIP47();
   }
 
   async generateFromEntropy(user: Buffer) {
     const random = await randomBytes(user.length < 32 ? 32 - user.length : 0);
     const buf = Buffer.concat([user, random], 32);
     this.secret = bip39.entropyToMnemonic(buf.toString('hex'));
-    this.setPaymentCode();
+    this.setBIP47();
   }
 
   _getExternalWIFByIndex(index: number): string | false {

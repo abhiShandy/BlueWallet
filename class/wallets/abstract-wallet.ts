@@ -2,7 +2,7 @@ import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
 import b58 from 'bs58check';
 import createHash from 'create-hash';
 import { CreateTransactionResult, CreateTransactionUtxo, Transaction, Utxo } from './types';
-import BIP47Factory from 'bip47';
+import BIP47Factory, { BIP47Interface } from 'bip47';
 import * as ecc from 'tiny-secp256k1';
 import ECPairFactory from 'ecpair';
 
@@ -59,6 +59,7 @@ export class AbstractWallet {
   masterFingerprint: number | false;
   paymentCode: string;
   paynym: string;
+  bip47: BIP47Interface;
 
   constructor() {
     const Constructor = this.constructor as unknown as WalletStatics;
@@ -84,6 +85,7 @@ export class AbstractWallet {
     this.masterFingerprint = false;
     this.paymentCode = '';
     this.paynym = '';
+    this.bip47 = {} as BIP47Interface;
   }
 
   /**
@@ -299,7 +301,7 @@ export class AbstractWallet {
       }
     }
 
-    this.setPaymentCode();
+    this.setBIP47();
 
     return this;
   }
@@ -468,7 +470,8 @@ export class AbstractWallet {
     return parseInt(hexValue, 16);
   }
 
-  setPaymentCode() {
-    this.paymentCode = BIP47Factory(ecc).fromBip39Seed(this.secret).getSerializedPaymentCode();
+  setBIP47() {
+    this.bip47 = BIP47Factory(ecc).fromBip39Seed(this.secret);
+    this.paymentCode = this.bip47.getSerializedPaymentCode();
   }
 }
