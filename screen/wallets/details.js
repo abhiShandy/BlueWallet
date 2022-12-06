@@ -134,8 +134,7 @@ const styles = StyleSheet.create({
   paymentCodeRowHeader: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 4,
-    marginTop: 16,
+    marginVertical: 16,
     justifyContent: 'space-between',
   },
 });
@@ -593,7 +592,7 @@ const WalletDetails = () => {
               </>
 
               <>
-                <Text style={[styles.textLabel1, stylesHook.textLabel2]}>Unclaimed PayNym</Text>
+                <Text style={[styles.textLabel1, stylesHook.textLabel2]}>PayNym</Text>
                 <PayNym paymentCode={wallet.paymentCode} />
               </>
 
